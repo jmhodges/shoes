@@ -434,10 +434,8 @@ class Shoes
         a.unshift #{subc}
         widget(*a, &b)
       end
-
-      def #{subc_str.downcase}(*a, &b)
-        #{meth_name}(*a, &b)
-      end
+      
+      alias #{subc_str.downcase} #{meth_name}
     }
   end
 end
