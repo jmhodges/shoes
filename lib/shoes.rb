@@ -421,10 +421,22 @@ class Shoes
   end
 
   def Widget.inherited subc
+    subc_str = subc.to_s[/::(\w+)$/, 1]
+
+    meth_name = subc_str.
+      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+      gsub(/([a-z\d])([A-Z])/,'\1_\2').
+      tr("-", "_").
+      downcase
+
     Shoes.class_eval %{
-      def #{subc.to_s[/::(\w+)$/, 1].downcase}(*a, &b)
+      def #{meth_name}(*a, &b)
         a.unshift #{subc}
         widget(*a, &b)
+      end
+
+      def #{subc_str.downcase}(*a, &b)
+        #{meth_name}(*a, &b)
       end
     }
   end
